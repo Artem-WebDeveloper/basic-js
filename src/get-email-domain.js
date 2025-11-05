@@ -15,7 +15,6 @@ function getEmailDomain(email) {
   return email.slice(atInd + 1);
 }
 
-console.log(getEmailDomain('prettyandsimple@example.com'));
 module.exports = {
   getEmailDomain,
 };
