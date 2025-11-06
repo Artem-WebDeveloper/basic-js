@@ -20,14 +20,58 @@ const { NotImplementedError } = require('../lib');
  *
  */
 class VigenereCipheringMachine {
-  encrypt() {
-    // Remove line below and write your code here
-    throw new NotImplementedError('Not implemented');
+  alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  constructor(direct = true) {
+    this.direct = direct;
+  }
+  encrypt(phrase, key) {
+    if (!phrase || !key) {
+      throw new Error('Incorrect arguments!');
+    }
+    phrase = [...phrase].map(ch => ch.toUpperCase()).join('');
+    key = [...key].map(ch => ch.toUpperCase()).join('');
+    if (phrase.length > key.length) {
+      key = key.repeat(phrase.length);
+    }
+    key = key.slice(0, phrase.replaceAll(' ', '').length);
+    let i = 0;
+    const res = phrase.split('').map(ch => {
+      if (this.alphabet.includes(ch)) {
+        const letterIndex = this.alphabet.indexOf(ch);
+        const keyIndex = this.alphabet.indexOf(key[i]);
+        i++;
+        return this.alphabet[(letterIndex + keyIndex) % 26];
+      } else {
+        return ch;
+      }
+    });
+
+    return this.direct ? res.join('') : res.reverse().join('');
   }
 
-  decrypt() {
-    // Remove line below and write your code here
-    throw new NotImplementedError('Not implemented');
+  decrypt(phrase, key) {
+    if (!phrase || !key) {
+      throw new Error('Incorrect arguments!');
+    }
+    phrase = [...phrase].map(ch => ch.toUpperCase()).join('');
+    key = [...key].map(ch => ch.toUpperCase()).join('');
+    if (phrase.length > key.length) {
+      key = key.repeat(phrase.length);
+    }
+    key = key.slice(0, phrase.replaceAll(' ', '').length);
+    let i = 0;
+    const res = phrase.split('').map(ch => {
+      if (this.alphabet.includes(ch)) {
+        const letterIndex = this.alphabet.indexOf(ch);
+        const keyIndex = this.alphabet.indexOf(key[i]);
+        i++;
+        return this.alphabet[(letterIndex - keyIndex + 26) % 26];
+      } else {
+        return ch;
+      }
+    });
+
+    return this.direct ? res.join('') : res.reverse().join('');
   }
 }
 
